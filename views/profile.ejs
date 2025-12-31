@@ -1,0 +1,1087 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <%- include('./partials/head') %>
+    <title>Profile</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            background-color: #f0f2f5;
+            padding-top: 80px;
+        }
+
+        .profile-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .profile-card {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+        }
+
+        .profile-header {
+            text-align: center;
+            padding-bottom: 30px;
+            border-bottom: 1px solid #e9ecef;
+            margin-bottom: 30px;
+        }
+
+        .profile-avatar {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 5px solid #667eea;
+            margin-bottom: 20px;
+        }
+
+        .profile-name {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+
+        .profile-occupation {
+            font-size: 1.1rem;
+            color: #6c757d;
+            margin-bottom: 15px;
+        }
+
+        .profile-location {
+            font-size: 0.95rem;
+            color: #868e96;
+            margin-bottom: 20px;
+        }
+
+        .profile-actions {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+
+        .follow-stats {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+
+        .follow-pill {
+            background: white;
+            border: 2px solid #e9ecef;
+            border-radius: 12px;
+            padding: 10px 18px;
+            min-width: 120px;
+            text-align: center;
+            color: #2c3e50;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .follow-pill:hover {
+            border-color: #667eea;
+            color: #667eea;
+            transform: translateY(-2px);
+        }
+
+        .info-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+        }
+
+        .info-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e9ecef;
+        }
+
+        .info-item {
+            display: flex;
+            padding: 12px 0;
+            border-bottom: 1px solid #f1f3f5;
+        }
+
+        .info-item:last-child {
+            border-bottom: none;
+        }
+
+        .info-label {
+            font-weight: 600;
+            color: #495057;
+            width: 140px;
+            flex-shrink: 0;
+        }
+
+        .info-value {
+            color: #6c757d;
+            flex: 1;
+        }
+
+        .btn-edit {
+            background: #20c997;
+            color: white;
+            border: none;
+            padding: 10px 25px;
+            border-radius: 25px;
+            font-weight: 500;
+            width: 100%;
+            margin-top: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-edit:hover {
+            background: #1aa179;
+            transform: translateY(-2px);
+        }
+
+        .social-link {
+            display: flex;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid #f1f3f5;
+            text-decoration: none;
+            color: #495057;
+            transition: all 0.3s ease;
+        }
+
+        .social-link:last-child {
+            border-bottom: none;
+        }
+
+        .social-link:hover {
+            color: #667eea;
+            transform: translateX(5px);
+        }
+
+        .social-icon {
+            width: 30px;
+            margin-right: 15px;
+            font-size: 1.2rem;
+        }
+
+        .blogs-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+        }
+
+        .blogs-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #20c997;
+            margin-bottom: 25px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e9ecef;
+        }
+
+        .blog-item {
+            padding: 20px;
+            border: 1px solid #e9ecef;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .blog-item:hover {
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            transform: translateY(-2px);
+        }
+
+        .blog-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .blog-header-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 15px;
+        }
+
+        .blog-title-link {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #2c3e50;
+            text-decoration: none;
+            flex: 1;
+        }
+
+        .blog-title-link:hover {
+            color: #667eea;
+        }
+
+        .blog-date {
+            font-size: 0.85rem;
+            color: #868e96;
+            white-space: nowrap;
+            margin-left: 15px;
+        }
+
+        .blog-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+
+        .blog-excerpt {
+            color: #6c757d;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        .blog-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .read-more-link {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .read-more-link:hover {
+            color: #5a6fd8;
+        }
+
+        .no-blogs {
+            text-align: center;
+            padding: 40px 20px;
+            color: #6c757d;
+        }
+
+        .no-blogs-icon {
+            font-size: 4rem;
+            color: #dee2e6;
+            margin-bottom: 20px;
+        }
+
+        /* Edit Modal Styles */
+        .edit-modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
+        }
+
+        .edit-modal.show {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content-custom {
+            background-color: white;
+            margin: auto;
+            padding: 0;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            animation: modalSlideIn 0.3s ease;
+            overflow: hidden;
+        }
+
+        @keyframes modalSlideIn {
+            from {
+                transform: translateY(-50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .modal-header-custom {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 25px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-header-custom h4 {
+            margin: 0;
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .modal-close {
+            color: white;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            background: none;
+            border: none;
+            padding: 0;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+
+        .modal-close:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: rotate(90deg);
+        }
+
+        .modal-body-custom {
+            padding: 30px;
+        }
+
+        .form-group-custom {
+            margin-bottom: 20px;
+        }
+
+        .form-group-custom label {
+            display: block;
+            margin-bottom: 8px;
+            color: #2c3e50;
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .form-group-custom input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            box-sizing: border-box;
+        }
+
+        .form-group-custom input:focus,
+        .form-group-custom textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.15);
+        }
+
+        .form-group-custom textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            box-sizing: border-box;
+            font-family: inherit;
+            resize: vertical;
+        }
+
+        .modal-footer-custom {
+            padding: 20px 30px;
+            background: #f8f9fa;
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            border-top: 1px solid #e9ecef;
+        }
+
+        .btn-modal {
+            padding: 10px 25px;
+            border: none;
+            border-radius: 25px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.95rem;
+        }
+
+        .btn-modal-cancel {
+            background: #e9ecef;
+            color: #6c757d;
+        }
+
+        .btn-modal-cancel:hover {
+            background: #dee2e6;
+            transform: translateY(-2px);
+        }
+
+        .btn-modal-save {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+        }
+
+        .btn-modal-save:hover {
+            background: linear-gradient(45deg, #5a6fd8, #6a4190);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-modal-save:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .alert-message {
+            padding: 12px 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            display: none;
+            font-size: 0.9rem;
+        }
+
+        .alert-success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .alert-error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        @media (max-width: 768px) {
+            .profile-actions {
+                flex-direction: column;
+            }
+
+            .btn-follow,
+            .btn-message {
+                width: 100%;
+            }
+
+            .info-item {
+                flex-direction: column;
+            }
+
+            .info-label {
+                width: 100%;
+                margin-bottom: 5px;
+            }
+
+            .modal-content-custom {
+                width: 95%;
+                margin: 20px auto;
+            }
+
+            .modal-header-custom,
+            .modal-body-custom,
+            .modal-footer-custom {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <%- include("./partials/nav") %>
+
+    <div class="profile-container">
+        <div class="row">
+            <!-- Left Column -->
+            <div class="col-lg-4 col-md-12">
+                <!-- Profile Summary Card -->
+                <div class="profile-card">
+                    <div class="profile-header">
+                        <img src="<%= user.profileImage || '/public/images/default.png' %>" 
+                             alt="<%= user.fullname %>" 
+                             class="profile-avatar"
+                             onerror="this.src='/public/images/default.png'">
+                        <h2 class="profile-name"><%= user.fullname %></h2>
+                        <p class="profile-occupation">Blog Writer</p>
+                        <p class="profile-location">
+                            <i class="fas fa-map-marker-alt"></i> 
+                            <%= user.email %>
+                        </p>
+                        <div class="follow-stats">
+                            <div class="follow-pill" id="followersBtn">
+                                <div style="font-size: 1.3rem; font-weight: 700;"><%= user.followers ? user.followers.length : 0 %></div>
+                                <div style="font-size: 0.9rem; color: #6c757d;">Followers</div>
+                            </div>
+                            <div class="follow-pill" id="followingBtn">
+                                <div style="font-size: 1.3rem; font-weight: 700;"><%= user.following ? user.following.length : 0 %></div>
+                                <div style="font-size: 0.9rem; color: #6c757d;">Following</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Personal Information Card -->
+                <div class="info-card">
+                    <h3 class="info-title">Personal Information</h3>
+                    <div class="info-item">
+                        <span class="info-label">Full Name:</span>
+                        <span class="info-value"><%= user.fullname %></span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Email:</span>
+                        <span class="info-value"><%= user.email %></span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Member Since:</span>
+                        <span class="info-value">
+                            <%= new Date(user.createdAt).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) %>
+                        </span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Total Blogs:</span>
+                        <span class="info-value"><%= blogs ? blogs.length : 0 %></span>
+                    </div>
+                    <button class="btn btn-edit" id="editProfileBtn">
+                        <i class="fas fa-edit me-2"></i>Edit Profile
+                    </button>
+                </div>
+
+                <!-- Social Links Card -->
+                <div class="info-card">
+                    <h3 class="info-title">Social Links</h3>
+                    <% if (user.twitter) { %>
+                        <a href="<%= user.twitter.startsWith('http') ? user.twitter : 'https://twitter.com/' + user.twitter %>" 
+                           target="_blank" 
+                           class="social-link">
+                            <i class="fab fa-twitter social-icon"></i>
+                            <span><%= user.twitter %></span>
+                        </a>
+                    <% } %>
+                    <% if (user.instagram) { %>
+                        <a href="<%= user.instagram.startsWith('http') ? user.instagram : 'https://instagram.com/' + user.instagram %>" 
+                           target="_blank" 
+                           class="social-link">
+                            <i class="fab fa-instagram social-icon"></i>
+                            <span><%= user.instagram %></span>
+                        </a>
+                    <% } %>
+                    <% if (user.facebook) { %>
+                        <a href="<%= user.facebook.startsWith('http') ? user.facebook : 'https://facebook.com/' + user.facebook %>" 
+                           target="_blank" 
+                           class="social-link">
+                            <i class="fab fa-facebook social-icon"></i>
+                            <span><%= user.facebook %></span>
+                        </a>
+                    <% } %>
+                    <% if (user.linkedin) { %>
+                        <a href="<%= user.linkedin.startsWith('http') ? user.linkedin : 'https://linkedin.com/in/' + user.linkedin %>" 
+                           target="_blank" 
+                           class="social-link">
+                            <i class="fab fa-linkedin social-icon"></i>
+                            <span><%= user.linkedin %></span>
+                        </a>
+                    <% } %>
+                    <% if (user.github) { %>
+                        <a href="<%= user.github.startsWith('http') ? user.github : 'https://github.com/' + user.github %>" 
+                           target="_blank" 
+                           class="social-link">
+                            <i class="fab fa-github social-icon"></i>
+                            <span><%= user.github %></span>
+                        </a>
+                    <% } %>
+                    <% if (user.youtube) { %>
+                        <a href="<%= user.youtube.startsWith('http') ? user.youtube : 'https://youtube.com/' + user.youtube %>" 
+                           target="_blank" 
+                           class="social-link">
+                            <i class="fab fa-youtube social-icon"></i>
+                            <span><%= user.youtube %></span>
+                        </a>
+                    <% } %>
+                    <% if (!user.twitter && !user.instagram && !user.facebook && !user.linkedin && !user.github && !user.youtube) { %>
+                        <p style="color: #6c757d; padding: 20px 0; text-align: center;">
+                            <i class="fas fa-info-circle me-2"></i>
+                            No social links added yet. Edit your profile to add them.
+                        </p>
+                    <% } %>
+                </div>
+            </div>
+
+            <!-- Right Column -->
+            <div class="col-lg-8 col-md-12">
+                <!-- Blogs Card -->
+                <div class="blogs-card">
+                    <h3 class="blogs-title">My Blogs</h3>
+                    <% if (blogs && blogs.length > 0) { %>
+                        <% blogs.forEach(blog => { %>
+                            <div class="blog-item">
+                                <div class="blog-header-row">
+                                    <a href="/blog/blog/<%= blog._id %>" class="blog-title-link">
+                                        <%= blog.title %>
+                                    </a>
+                                    <span class="blog-date">
+                                        <i class="fas fa-calendar"></i>
+                                        <%= new Date(blog.createdat).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }) %>
+                                    </span>
+                                </div>
+                                <% if (blog.coverimage) { %>
+                                    <img src="<%= blog.coverimage && blog.coverimage.startsWith('/public/') ? blog.coverimage : '/public' + blog.coverimage %>" 
+                                         alt="<%= blog.title %>" 
+                                         class="blog-image"
+                                         onerror="this.style.display='none'">
+                                <% } %>
+                                <p class="blog-excerpt">
+                                    <%= blog.content.replace(/<[^>]*>/g, '').substring(0, 200) %>...
+                                </p>
+                                <div class="blog-meta">
+                                    <a href="/blog/blog/<%= blog._id %>" class="read-more-link">
+                                        Read More <i class="fas fa-arrow-right"></i>
+                                    </a>
+                                    <small class="text-muted">
+                                        <i class="far fa-clock"></i>
+                                        <%= Math.ceil(blog.content.length / 1000) %> min read
+                                    </small>
+                                </div>
+                            </div>
+                        <% }) %>
+                    <% } else { %>
+                        <div class="no-blogs">
+                            <i class="fas fa-blog no-blogs-icon"></i>
+                            <h4>No Blogs Yet</h4>
+                            <p>You haven't created any blogs yet. Start sharing your stories!</p>
+                            <a href="/blog/addblog" class="btn btn-follow mt-3">
+                                <i class="fas fa-plus me-2"></i>Create Your First Blog
+                            </a>
+                        </div>
+                    <% } %>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Followers / Following Modal -->
+    <div id="followListModal" class="edit-modal">
+        <div class="modal-content-custom" style="max-width: 520px;">
+            <div class="modal-header-custom">
+                <h4 id="followListTitle"><i class="fas fa-users me-2"></i>Followers</h4>
+                <button class="modal-close" id="closeFollowModalBtn">&times;</button>
+            </div>
+            <div class="modal-body-custom" style="max-height: 420px; overflow-y: auto;">
+                <div id="followListContainer">
+                    <!-- Filled by JS -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit Profile Modal -->
+    <div id="editProfileModal" class="edit-modal">
+        <div class="modal-content-custom">
+            <div class="modal-header-custom">
+                <h4><i class="fas fa-user-edit me-2"></i>Edit Profile</h4>
+                <button class="modal-close" id="closeModalBtn">&times;</button>
+            </div>
+            <div class="modal-body-custom">
+                <div id="alertMessage" class="alert-message"></div>
+                <form id="editProfileForm">
+                    <div class="form-group-custom">
+                        <label for="editFullName">
+                            <i class="fas fa-user me-2"></i>Full Name
+                        </label>
+                        <input type="text" 
+                               id="editFullName" 
+                               name="fullname" 
+                               value="<%= user.fullname %>" 
+                               required
+                               maxlength="100">
+                    </div>
+                    <div class="form-group-custom">
+                        <label for="editEmail">
+                            <i class="fas fa-envelope me-2"></i>Email
+                        </label>
+                        <input type="email" 
+                               id="editEmail" 
+                               name="email" 
+                               value="<%= user.email %>" 
+                               required>
+                    </div>
+
+                    <hr style="margin: 25px 0; border: none; border-top: 1px solid #e9ecef;">
+
+                    <h5 style="color: #2c3e50; margin-bottom: 20px; font-weight: 600;">
+                        <i class="fas fa-link me-2"></i>Additional Information
+                    </h5>
+
+                    <div class="form-group-custom">
+                        <label for="editBio">
+                            <i class="fas fa-user-circle me-2"></i>Bio
+                        </label>
+                        <textarea id="editBio" 
+                                  name="bio" 
+                                  class="form-control" 
+                                  rows="3" 
+                                  placeholder="Tell us about yourself..."><%= user.bio || '' %></textarea>
+                    </div>
+
+                    <div class="form-group-custom">
+                        <label for="editLocation">
+                            <i class="fas fa-map-marker-alt me-2"></i>Location
+                        </label>
+                        <input type="text" 
+                               id="editLocation" 
+                               name="location" 
+                               value="<%= user.location || '' %>" 
+                               placeholder="Your location">
+                    </div>
+
+                    <hr style="margin: 25px 0; border: none; border-top: 1px solid #e9ecef;">
+
+                    <h5 style="color: #2c3e50; margin-bottom: 20px; font-weight: 600;">
+                        <i class="fas fa-share-alt me-2"></i>Social Media Links
+                    </h5>
+
+                    <div class="form-group-custom">
+                        <label for="editTwitter">
+                            <i class="fab fa-twitter me-2"></i>Twitter
+                        </label>
+                        <input type="text" 
+                               id="editTwitter" 
+                               name="twitter" 
+                               value="<%= user.twitter || '' %>" 
+                               placeholder="username or full URL">
+                    </div>
+
+                    <div class="form-group-custom">
+                        <label for="editInstagram">
+                            <i class="fab fa-instagram me-2"></i>Instagram
+                        </label>
+                        <input type="text" 
+                               id="editInstagram" 
+                               name="instagram" 
+                               value="<%= user.instagram || '' %>" 
+                               placeholder="username or full URL">
+                    </div>
+
+                    <div class="form-group-custom">
+                        <label for="editFacebook">
+                            <i class="fab fa-facebook me-2"></i>Facebook
+                        </label>
+                        <input type="text" 
+                               id="editFacebook" 
+                               name="facebook" 
+                               value="<%= user.facebook || '' %>" 
+                               placeholder="username or full URL">
+                    </div>
+
+                    <div class="form-group-custom">
+                        <label for="editLinkedIn">
+                            <i class="fab fa-linkedin me-2"></i>LinkedIn
+                        </label>
+                        <input type="text" 
+                               id="editLinkedIn" 
+                               name="linkedin" 
+                               value="<%= user.linkedin || '' %>" 
+                               placeholder="username or full URL">
+                    </div>
+
+                    <div class="form-group-custom">
+                        <label for="editGitHub">
+                            <i class="fab fa-github me-2"></i>GitHub
+                        </label>
+                        <input type="text" 
+                               id="editGitHub" 
+                               name="github" 
+                               value="<%= user.github || '' %>" 
+                               placeholder="username or full URL">
+                    </div>
+
+                    <div class="form-group-custom">
+                        <label for="editYouTube">
+                            <i class="fab fa-youtube me-2"></i>YouTube
+                        </label>
+                        <input type="text" 
+                               id="editYouTube" 
+                               name="youtube" 
+                               value="<%= user.youtube || '' %>" 
+                               placeholder="channel name or full URL">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer-custom">
+                <button type="button" class="btn-modal btn-modal-cancel" id="cancelEditBtn">
+                    Cancel
+                </button>
+                <button type="button" class="btn-modal btn-modal-save" id="saveProfileBtn">
+                    <i class="fas fa-save me-2"></i>Save Changes
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <%- include('./partials/script') %>
+
+    <script>
+        // Get modal elements
+        const editModal = document.getElementById('editProfileModal');
+        const editBtn = document.getElementById('editProfileBtn');
+        const closeBtn = document.getElementById('closeModalBtn');
+        const cancelBtn = document.getElementById('cancelEditBtn');
+        const saveBtn = document.getElementById('saveProfileBtn');
+        const editForm = document.getElementById('editProfileForm');
+        const alertMessage = document.getElementById('alertMessage');
+        const editFullName = document.getElementById('editFullName');
+        const editEmail = document.getElementById('editEmail');
+        const followersBtn = document.getElementById('followersBtn');
+        const followingBtn = document.getElementById('followingBtn');
+        const followListModal = document.getElementById('followListModal');
+        const closeFollowModalBtn = document.getElementById('closeFollowModalBtn');
+        const followListTitle = document.getElementById('followListTitle');
+        const followListContainer = document.getElementById('followListContainer');
+        const editBio = document.getElementById('editBio');
+        const editLocation = document.getElementById('editLocation');
+        const editTwitter = document.getElementById('editTwitter');
+        const editInstagram = document.getElementById('editInstagram');
+        const editFacebook = document.getElementById('editFacebook');
+        const editLinkedIn = document.getElementById('editLinkedIn');
+        const editGitHub = document.getElementById('editGitHub');
+        const editYouTube = document.getElementById('editYouTube');
+
+        const initialProfile = <%- JSON.stringify({
+            fullname: user.fullname || '',
+            email: user.email || '',
+            bio: user.bio || '',
+            location: user.location || '',
+            twitter: user.twitter || '',
+            instagram: user.instagram || '',
+            facebook: user.facebook || '',
+            linkedin: user.linkedin || '',
+            github: user.github || '',
+            youtube: user.youtube || ''
+        }) %>;
+
+        // Open modal
+        editBtn.addEventListener('click', () => {
+            editModal.classList.add('show');
+            // Reset form values
+            editFullName.value = initialProfile.fullname;
+            editEmail.value = initialProfile.email;
+            if (editBio) editBio.value = initialProfile.bio;
+            if (editLocation) editLocation.value = initialProfile.location;
+            if (editTwitter) editTwitter.value = initialProfile.twitter;
+            if (editInstagram) editInstagram.value = initialProfile.instagram;
+            if (editFacebook) editFacebook.value = initialProfile.facebook;
+            if (editLinkedIn) editLinkedIn.value = initialProfile.linkedin;
+            if (editGitHub) editGitHub.value = initialProfile.github;
+            if (editYouTube) editYouTube.value = initialProfile.youtube;
+            hideAlert();
+        });
+
+        // Close modal
+        function closeModal() {
+            editModal.classList.remove('show');
+            hideAlert();
+        }
+
+        closeBtn.addEventListener('click', closeModal);
+        cancelBtn.addEventListener('click', closeModal);
+
+        // Close modal when clicking outside
+        editModal.addEventListener('click', (e) => {
+            if (e.target === editModal) {
+                closeModal();
+            }
+        });
+
+        // Followers / Following data
+        const followersData = <%- JSON.stringify(user.followers || []) %>;
+        const followingData = <%- JSON.stringify(user.following || []) %>;
+
+        function openFollowModal(title, list) {
+            if (!followListModal || !followListTitle || !followListContainer) return;
+            followListTitle.textContent = title;
+            followListContainer.innerHTML = '';
+
+            if (!list || list.length === 0) {
+                followListContainer.innerHTML = `
+                    <div style="text-align:center; color:#6c757d; padding:20px 0;">
+                        <i class="fas fa-info-circle me-2"></i>No users found.
+                    </div>`;
+            } else {
+                followListContainer.innerHTML = list.map(u => `
+                    <div style="display:flex; align-items:center; gap:12px; padding:10px 0; border-bottom:1px solid #f1f3f5;">
+                        <img src="${u.profileImage || '/public/images/default.png'}" 
+                             alt="${u.fullname || 'User'}" 
+                             style="width:48px; height:48px; border-radius:50%; object-fit:cover; border:2px solid #e9ecef;"
+                             onerror="this.src='/public/images/default.png'">
+                        <div style="flex:1;">
+                            <div style="font-weight:600; color:#2c3e50;">${u.fullname || 'User'}</div>
+                            <div style="color:#6c757d; font-size:0.9rem;">${u.email || ''}</div>
+                        </div>
+                    </div>
+                `).join('');
+            }
+
+            followListModal.classList.add('show');
+        }
+
+        if (followersBtn) {
+            followersBtn.addEventListener('click', () => {
+                openFollowModal('Followers', followersData);
+            });
+        }
+
+        if (followingBtn) {
+            followingBtn.addEventListener('click', () => {
+                openFollowModal('Following', followingData);
+            });
+        }
+
+        if (closeFollowModalBtn) {
+            closeFollowModalBtn.addEventListener('click', () => {
+                followListModal.classList.remove('show');
+            });
+        }
+
+        if (followListModal) {
+            followListModal.addEventListener('click', (e) => {
+                if (e.target === followListModal) {
+                    followListModal.classList.remove('show');
+                }
+            });
+        }
+
+        // Show alert message
+        function showAlert(message, type) {
+            alertMessage.textContent = message;
+            alertMessage.className = `alert-message alert-${type}`;
+            alertMessage.style.display = 'block';
+            
+            if (type === 'success') {
+                setTimeout(() => {
+                    hideAlert();
+                }, 3000);
+            }
+        }
+
+        // Hide alert message
+        function hideAlert() {
+            alertMessage.style.display = 'none';
+            alertMessage.textContent = '';
+        }
+
+        // Save profile changes
+        saveBtn.addEventListener('click', async () => {
+            const fullname = editFullName.value.trim();
+            const email = editEmail.value.trim();
+            const bio = editBio ? editBio.value.trim() : '';
+            const location = editLocation ? editLocation.value.trim() : '';
+            const twitter = editTwitter ? editTwitter.value.trim() : '';
+            const instagram = editInstagram ? editInstagram.value.trim() : '';
+            const facebook = editFacebook ? editFacebook.value.trim() : '';
+            const linkedin = editLinkedIn ? editLinkedIn.value.trim() : '';
+            const github = editGitHub ? editGitHub.value.trim() : '';
+            const youtube = editYouTube ? editYouTube.value.trim() : '';
+
+            // Validation
+            if (!fullname || !email) {
+                showAlert('Please fill in all required fields', 'error');
+                return;
+            }
+
+            if (!validateEmail(email)) {
+                showAlert('Please enter a valid email address', 'error');
+                return;
+            }
+
+            // Disable save button
+            saveBtn.disabled = true;
+            saveBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Saving...';
+
+            try {
+                const response = await fetch('/profile/update', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    credentials: 'include',
+                    body: JSON.stringify({ 
+                        fullname, 
+                        email, 
+                        bio, 
+                        location, 
+                        twitter, 
+                        instagram, 
+                        facebook, 
+                        linkedin, 
+                        github, 
+                        youtube 
+                    })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    showAlert('Profile updated successfully!', 'success');
+                    
+                    // Update the displayed values
+                    document.querySelector('.profile-name').textContent = fullname;
+                    document.querySelector('.profile-location').innerHTML = `<i class="fas fa-map-marker-alt"></i> ${email}`;
+                    document.querySelectorAll('.info-item')[0].querySelector('.info-value').textContent = fullname;
+                    document.querySelectorAll('.info-item')[1].querySelector('.info-value').textContent = email;
+                    
+                    // Close modal after a short delay
+                    setTimeout(() => {
+                        closeModal();
+                        // Reload page to ensure all data is synced
+                        window.location.reload();
+                    }, 1500);
+                } else {
+                    showAlert(data.message || 'Failed to update profile', 'error');
+                    saveBtn.disabled = false;
+                    saveBtn.innerHTML = '<i class="fas fa-save me-2"></i>Save Changes';
+                }
+            } catch (error) {
+                console.error('Error updating profile:', error);
+                showAlert('An error occurred while updating your profile', 'error');
+                saveBtn.disabled = false;
+                saveBtn.innerHTML = '<i class="fas fa-save me-2"></i>Save Changes';
+            }
+        });
+
+        // Email validation function
+        function validateEmail(email) {
+            const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return re.test(email);
+        }
+
+        // Escape HTML to prevent XSS
+        function escapeHtml(text) {
+            const map = {
+                '&': '&amp;',
+                '<': '&lt;',
+                '>': '&gt;',
+                '"': '&quot;',
+                "'": '&#039;'
+            };
+            return text.replace(/[&<>"']/g, m => map[m]);
+        }
+    </script>
+</body>
+
+</html>

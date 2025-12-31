@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <%- include('./partials/head') %>
+        <title>All BlogsSSSS
+        </title>
+        <style>
+            body {
+                background-color: #f8f9fa;
+            }
+
+            .blog-header {
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                color: white;
+                padding: 60px 0;
+                margin-bottom: 40px;
+            }
+
+            .blog-card {
+                transition: transform 0.3s ease, box-shadow 0.3s ease;
+                border: none;
+                border-radius: 15px;
+                overflow: hidden;
+                height: 100%;
+            }
+
+            .blog-card:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+            }
+
+            .blog-image {
+                height: 200px;
+                object-fit: cover;
+                width: 100%;
+            }
+
+            .blog-content {
+                padding: 20px;
+            }
+
+            .blog-title {
+                font-size: 1.25rem;
+                font-weight: 600;
+                margin-bottom: 10px;
+                color: #2c3e50;
+            }
+
+            .blog-excerpt {
+                color: #6c757d;
+                font-size: 0.95rem;
+                line-height: 1.5;
+                margin-bottom: 15px;
+            }
+
+            .blog-meta {
+                font-size: 0.85rem;
+                color: #868e96;
+                margin-bottom: 15px;
+            }
+
+            .read-more-btn {
+                background: linear-gradient(45deg, #667eea, #764ba2);
+                border: none;
+                border-radius: 25px;
+                padding: 8px 20px;
+                font-size: 0.9rem;
+                font-weight: 500;
+            }
+
+            .read-more-btn:hover {
+                background: linear-gradient(45deg, #5a6fd8, #6a4190);
+                transform: translateY(-1px);
+            }
+
+            .no-blogs {
+                text-align: center;
+                padding: 60px 20px;
+                color: #6c757d;
+            }
+
+            .add-blog-btn {
+                position: fixed;
+                bottom: 30px;
+                right: 30px;
+                width: 60px;
+                height: 60px;
+                border-radius: 50%;
+                background: linear-gradient(45deg, #667eea, #764ba2);
+                border: none;
+                color: white;
+                font-size: 24px;
+                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+                transition: all 0.3s ease;
+            }
+
+            .add-blog-btn:hover {
+                transform: scale(1.1);
+                box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+            }
+
+            /* Like Button Styles */
+            .like-button {
+                background: #fff;
+                border: 1px solid #dc3545;
+                padding: 8px 12px;
+                border-radius: 25px;
+                display: inline-flex;
+                align-items: center;
+                gap: 8px;
+                cursor: pointer;
+                transition: all 0.3s ease;
+                font-size: 14px;
+                font-weight: 600;
+                color: #2c3e50;
+                min-width: 60px;
+                justify-content: center;
+            }
+
+            .like-button:hover {
+                background: rgba(220, 53, 69, 0.1);
+                transform: translateY(-1px);
+                border-color: #dc3545;
+            }
+
+            .like-button:active {
+                transform: translateY(0);
+            }
+
+            .heart {
+                font-size: 16px;
+                display: inline-block;
+                transition: all 0.3s ease;
+                color: #ccc;
+            }
+
+            .heart.red {
+                color: #dc3545 !important;
+                animation: heartPulse 0.6s ease;
+            }
+
+            /* Force red color for liked hearts */
+            .like-button[data-liked="1"] .heart {
+                color: #dc3545 !important;
+            }
+
+            .like-button:hover .heart {
+                color: #dc3545;
+            }
+
+            .like-count {
+                color: #2c3e50;
+                font-weight: 600;
+                min-width: 20px;
+                text-align: left;
+            }
+
+            @keyframes heartPulse {
+                0% { transform: scale(1); }
+                50% { transform: scale(1.2); }
+                100% { transform: scale(1); }
+            }
+        </style>
+</head>
+
+<body>
+    <%- include("./partials/nav") %>
+
+        <!-- Header Section -->
+        <div class="blog-header">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12 text-center">
+                        <h1 class="display-4 mb-3">Our Blog</h1>
+                        <p class="lead">Discover amazing stories and insights from our community</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Blog Content -->
+        <div class="container">
+            <% if (blogs && blogs.length> 0) { %>
+                <div class="row g-4">
+                    <% blogs.forEach(blog=> { %>
+                        <div class="col-lg-4 col-md-6 col-sm-12">
+                            <div class="card blog-card h-100">
+                                <img src="<%= blog.coverimage && blog.coverimage.startsWith('/public/') ? blog.coverimage : '/public' + (blog.coverimage || '/images/default.png') %>" 
+                                     class="blog-image" 
+                                     alt="<%= blog.title %>"
+                                     onerror="this.src='/public/images/default.png'">
+
+                                <div class="blog-content">
+                                    <h5 class="blog-title">
+                                        <%= blog.title %>
+                                    </h5>
+
+                                    <div class="blog-meta">
+                                        <i class="fas fa-user"></i>
+                                        <%= blog.createdby ? blog.createdby.fullname : 'Anonymous' %>
+                                            <span class="mx-2">•</span>
+                                            <i class="fas fa-calendar"></i>
+                                            <%= new Date(blog.createdat).toLocaleDateString('en-US', { year: 'numeric' ,
+                                                month: 'short' , day: 'numeric' }) %>
+                                    </div>
+
+                                    <p class="blog-excerpt">
+                                        <%= blog.content.replace(/<[^>]*>/g, '').substring(0, 120) %>...
+                                    </p>
+
+                                    <!-- Read More Section -->
+                                    <div class="d-flex justify-content-between align-items-center mb-4">
+                                        <a href="/blog/blog/<%= blog._id %>" class="btn btn-primary read-more-btn">
+                                            Read More
+                                        </a>
+                                        <small class="text-muted">
+                                            <%= Math.ceil(blog.content.length / 1000) %> min read
+                                        </small>
+                                    </div>
+                                    
+                                    <!-- User Info and Like Button Section -->
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div class="blog-meta" style="display: flex; align-items: center; gap: 10px; font-size: 0.95rem;">
+                                            <img src="<%= blog.createdby?.profileImage || '/public/images/default.png' %>"
+                                                 alt="<%= blog.createdby?.fullname || 'Author' %>"
+                                                 style="width:36px;height:36px;border-radius:50%;object-fit:cover;"
+                                                 onerror="this.src='/public/images/default.png'">
+                                            <span style="font-weight: 500; color: #495057;"><%= blog.createdby?.fullname || 'Anonymous' %></span>
+                                        </div>
+                                        <button class="like-button" 
+                                                data-blog-id="<%= blog._id %>" 
+                                                data-liked="<%= blog.isLiked ? '1' : '0' %>"
+                                                title="Likes: <%= blog.likes || 0 %>, Liked: <%= blog.isLiked %>">
+                                            <span class="heart">❤️</span>
+                                            <span class="like-count"><%= blog.likes || 0 %></span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <% }) %>
+                </div>
+                <% } else { %>
+                    <div class="no-blogs">
+                        <i class="fas fa-blog fa-4x mb-4 text-muted"></i>
+                        <h3>No blogs yet</h3>
+                        <p class="lead">Be the first to share your story!</p>
+                        <a href="/blog/addblog" class="btn btn-primary btn-lg mt-3">
+                            <i class="fas fa-plus me-2"></i>Create Your First Blog
+                        </a>
+                    </div>
+                    <% } %>
+        </div>
+
+        <!-- Floating Add Button -->
+        <a href="/blog/addblog" class="add-blog-btn" title="Add New Blog">
+            <i class="fas fa-plus"></i>
+        </a>
+
+        <%- include('./partials/script') %>
+
+        <script>
+            // Initialize hearts on page load
+            document.addEventListener('DOMContentLoaded', function() {
+                console.log('Page loaded, looking for like buttons...');
+                const buttons = document.querySelectorAll('.like-button');
+                console.log('Found', buttons.length, 'like buttons');
+                
+                buttons.forEach(function(btn, index) {
+                    const isLiked = btn.getAttribute('data-liked') === '1';
+                    const heartIcon = btn.querySelector('.heart');
+                    
+                    console.log(`Button ${index}: liked=${isLiked}, blogId=${btn.getAttribute('data-blog-id')}`);
+                    
+                    if (isLiked) {
+                        heartIcon.classList.add('red');
+                        heartIcon.style.color = '#dc3545';
+                        console.log(`Button ${index}: Set heart to RED`);
+                    } else {
+                        heartIcon.classList.remove('red');
+                        heartIcon.style.color = '#ccc';
+                        console.log(`Button ${index}: Set heart to GRAY`);
+                    }
+                    
+                    // Ensure red border styling
+                    btn.style.border = '1px solid #dc3545';
+                    btn.style.background = '#fff';
+                });
+            });
+
+            // Simple like button functionality
+            document.querySelectorAll('.like-button').forEach(function(btn) {
+                btn.addEventListener('click', async function() {
+                    const blogId = this.getAttribute('data-blog-id');
+                    const liked = this.getAttribute('data-liked') === '1';
+                    const likeCountEl = this.querySelector('.like-count');
+                    const heartIcon = this.querySelector('.heart');
+                    const originalCount = likeCountEl.textContent;
+
+                    // Disable button during request
+                    this.disabled = true;
+
+                    // Optimistic UI update with forced colors
+                    let newCount = parseInt(originalCount || '0', 10);
+                    if (liked) {
+                        // Unlike - make heart gray
+                        newCount = Math.max(0, newCount - 1);
+                        this.setAttribute('data-liked', '0');
+                        heartIcon.classList.remove('red');
+                        heartIcon.style.color = '#ccc';
+                    } else {
+                        // Like - make heart RED
+                        newCount += 1;
+                        this.setAttribute('data-liked', '1');
+                        heartIcon.classList.add('red');
+                        heartIcon.style.color = '#dc3545';
+                    }
+                    likeCountEl.textContent = newCount;
+
+                    try {
+                        const response = await fetch('/blog/like/' + blogId, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            credentials: 'include'
+                        });
+                        
+                        const data = await response.json();
+                        
+                        if (data.success) {
+                            // Update with server response - FORCE RED COLOR
+                            likeCountEl.textContent = data.likes;
+                            this.setAttribute('data-liked', data.liked ? '1' : '0');
+                            
+                            if (data.liked) {
+                                heartIcon.classList.add('red');
+                                heartIcon.style.color = '#dc3545';
+                            } else {
+                                heartIcon.classList.remove('red');
+                                heartIcon.style.color = '#ccc';
+                            }
+                        } else {
+                            throw new Error(data.message || 'Failed to update like');
+                        }
+                    } catch (error) {
+                        // Revert optimistic update on error
+                        this.setAttribute('data-liked', liked ? '1' : '0');
+                        likeCountEl.textContent = originalCount;
+                        
+                        if (liked) {
+                            heartIcon.classList.add('red');
+                            heartIcon.style.color = '#dc3545';
+                        } else {
+                            heartIcon.classList.remove('red');
+                            heartIcon.style.color = '#ccc';
+                        }
+                        
+                        alert('Unable to update like. Please try again.');
+                        console.error('Like error:', error);
+                    } finally {
+                        this.disabled = false;
+                    }
+                });
+            });
+        </script>
+
+</body>
+
+</html>

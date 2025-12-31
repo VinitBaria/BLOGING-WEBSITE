@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Blog Editor — Bootstrap 5</title>
+
+  <%- include('./partials/head') %>
+
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Quill Editor -->
+    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+
+    <style>
+      body {
+        background: #f6f8fa;
+      }
+
+      .card {
+        border: none;
+        border-radius: 12px;
+        box-shadow: 0 6px 20px rgba(18, 38, 63, 0.08);
+      }
+
+      .cover-preview {
+        height: 220px;
+        object-fit: cover;
+        width: 100%;
+        border-radius: 8px;
+      }
+
+      .quill-editor {
+        min-height: 300px;
+        border-radius: 8px;
+      }
+
+      .small-muted {
+        font-size: 0.85rem;
+        color: #6c757d;
+      }
+    </style>
+</head>
+
+<body>
+   <%- include("./partials/nav") %>
+  <div class="container py-5">
+    <div class="row justify-content-center">
+      <div class="col-lg-9">
+        <div class="card p-4">
+
+          <div class="d-flex align-items-center mb-3">
+            <h3 class="mb-0">Create Blog Post</h3>
+            <div class="ms-auto small-muted">All fields required</div>
+          </div>
+
+          <form id="blogForm" method="POST" action="/blog/addblog" enctype="multipart/form-data">
+
+            <!-- TITLE -->
+            <div class="mb-3">
+              <label for="title" class="form-label">Title</label>
+              <input type="text" class="form-control form-control-lg" id="title" name="title"
+                placeholder="Write a catchy title" required maxlength="150">
+              <div class="form-text small-muted">
+                <span id="titleCount">0</span>/150 characters
+              </div>
+            </div>
+
+            <hr class="my-4">
+
+            <!-- COVER IMAGE -->
+            <div class="mb-3">
+              <label class="form-label">Cover Image</label>
+              <div class="d-flex gap-3 align-items-start">
+
+                <div style="flex: 1;">
+                  <input class="form-control" name="coverImage" type="file" id="coverImage" accept="image/*" required>
+                  <div class="small-muted mt-2">
+                    Accepted: JPG, PNG, WEBP
+                  </div>
+                </div>
+
+                <div style="width: 240px;">
+                  <img id="coverPreview" class="cover-preview bg-light"
+                    src="https://via.placeholder.com/300x200?text=Cover+Preview" alt="Preview">
+                </div>
+
+              </div>
+            </div>
+
+            <!-- CONTENT -->
+            <div class="mb-3">
+              <label class="form-label">Content</label>
+
+              <!-- Hidden textarea for server -->
+              <textarea id="content" name="content" class="d-none"></textarea>
+
+              <!-- Quill visual editor -->
+              <div id="editor" class="quill-editor bg-white"></div>
+
+              <div class="form-text small-muted mt-1">
+                Format your blog using the toolbar above.
+              </div>
+            </div>
+
+            <div class="d-flex gap-2 mt-4">
+              <button type="submit" class="btn btn-primary btn-lg">Publish</button>
+              <button type="reset" class="btn btn-light btn-lg">Reset</button>
+            </div>
+
+          </form>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SCRIPTS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.quilljs.com/1.3.6/quill.min.js"></script>
+
+  <%- include('./partials/script') %>
+
+    <script>
+      // Initialize Quill
+      const quill = new Quill('#editor', {
+        theme: 'snow',
+        placeholder: 'Write your blog content here...',
+        modules: {
+          toolbar: [
+            [{ header: [1, 2, 3, false] }],
+            ['bold', 'italic', 'underline'],
+            [{ list: 'ordered' }, { list: 'bullet' }],
+            ['link', 'image'],
+            ['clean']
+          ]
+        }
+      });
+
+      // Live title count
+      const titleInput = document.getElementById('title');
+      const titleCount = document.getElementById('titleCount');
+      titleInput.addEventListener('input', () => {
+        titleCount.textContent = titleInput.value.length;
+      });
+
+      // Cover preview
+      document.getElementById('coverImage').addEventListener('change', (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = (ev) => {
+          document.getElementById('coverPreview').src = ev.target.result;
+        };
+        reader.readAsDataURL(file);
+      });
+
+      // Send quill HTML into hidden textarea
+      document.getElementById('blogForm').addEventListener('submit', () => {
+        document.getElementById('content').value = quill.root.innerHTML;
+      });
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <%- include('./partials/head') %>
+  <title>About | BlogSpace</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    body {
+      background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+      padding-top: 90px;
+    }
+
+    .about-hero {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 60px 0;
+      border-radius: 0 0 30px 30px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    }
+
+    .about-hero h1 {
+      font-weight: 800;
+      margin-bottom: 10px;
+    }
+
+    .about-hero p {
+      font-size: 1.1rem;
+      opacity: 0.95;
+    }
+
+    .stats-card {
+      background: white;
+      border-radius: 15px;
+      padding: 20px;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .stats-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 1.4rem;
+    }
+
+    .stats-value {
+      font-size: 1.8rem;
+      font-weight: 800;
+      color: #2c3e50;
+      margin: 0;
+    }
+
+    .stats-label {
+      margin: 0;
+      color: #6c757d;
+      font-weight: 600;
+    }
+
+    .section-title {
+      font-weight: 700;
+      color: #2c3e50;
+      margin: 40px 0 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .blog-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 20px;
+    }
+
+    .blog-card {
+      background: white;
+      border-radius: 15px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .blog-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
+    }
+
+    .blog-image {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+    }
+
+    .blog-body {
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      flex: 1;
+    }
+
+    .blog-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #2c3e50;
+      margin: 0;
+    }
+
+    .blog-meta {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: #6c757d;
+      font-size: 0.9rem;
+    }
+
+    .blog-excerpt {
+      color: #6c757d;
+      font-size: 0.95rem;
+      flex: 1;
+      margin: 4px 0 0;
+    }
+
+    .blog-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 10px;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .blog-footer .btn {
+      white-space: nowrap;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .like-btn {
+      min-width: 70px;
+      justify-content: center;
+    }
+
+    .tag-pill {
+      background: rgba(102, 126, 234, 0.12);
+      color: #667eea;
+      border-radius: 12px;
+      padding: 6px 10px;
+      font-size: 0.8rem;
+      font-weight: 600;
+    }
+
+    .empty-state {
+      text-align: center;
+      color: #6c757d;
+      padding: 40px 0;
+    }
+  </style>
+</head>
+<body>
+  <%- include('./partials/nav') %>
+
+  <div class="about-hero">
+    <div class="container">
+      <div class="row align-items-center">
+        <div class="col-lg-8">
+          <p class="mb-2">Analytics</p>
+          <h1>Insights about our blogs</h1>
+          <p>Track how many blogs you have published and estimated views across the platform.</p>
+        </div>
+    <div class="col-lg-4 mt-4 mt-lg-0">
+          <div class="row g-3">
+            <div class="col-12">
+              <div class="stats-card">
+                <div class="stats-icon" style="background: linear-gradient(135deg,#667eea,#764ba2);">
+                  <i class="fas fa-book-open"></i>
+                </div>
+                <div>
+                  <p class="stats-label mb-1">Total Blogs</p>
+                  <p class="stats-value mb-0"><%= stats?.totalBlogs || 0 %></p>
+                </div>
+              </div>
+            </div>
+            <div class="col-12">
+              <div class="stats-card">
+                <div class="stats-icon" style="background: linear-gradient(135deg,#ff9f43,#ff6f61);">
+                  <i class="fas fa-eye"></i>
+                </div>
+                <div>
+                  <p class="stats-label mb-1">Estimated Views</p>
+                  <p class="stats-value mb-0"><%= stats?.totalViews || 0 %></p>
+                </div>
+              </div>
+            </div>
+            <div class="col-12">
+              <div class="stats-card">
+                <div class="stats-icon" style="background: linear-gradient(135deg,#10b981,#16a085);">
+                  <i class="fas fa-heart"></i>
+                </div>
+                <div>
+                  <p class="stats-label mb-1">Total Likes</p>
+                  <p class="stats-value mb-0"><%= stats?.totalLikes || 0 %></p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container my-5">
+    <h3 class="section-title"><i class="fas fa-list me-2"></i>Your Blogs</h3>
+
+    <% if (blogs && blogs.length > 0) { %>
+      <div class="blog-grid">
+        <% blogs.forEach(function(blog){ %>
+          <div class="blog-card">
+            <img src="<%= blog.coverimage && blog.coverimage.startsWith('/public/') ? blog.coverimage : '/public' + (blog.coverimage || '/images/default.png') %>"
+                 alt="<%= blog.title %>"
+                 class="blog-image"
+                 onerror="this.src='/public/images/default.png'">
+
+            <div class="blog-body">
+              <div class="blog-meta">
+                <i class="fas fa-calendar-alt"></i>
+                <span><%= new Date(blog.createdat).toLocaleDateString('en-US',{ year:'numeric', month:'short', day:'numeric' }) %></span>
+              </div>
+
+              <h4 class="blog-title"><%= blog.title %></h4>
+              <p class="blog-excerpt"><%= blog.content.replace(/<[^>]*>/g,'').substring(0,120) %>...</p>
+
+              <div class="blog-footer">
+                <div class="blog-meta" style="gap:6px;">
+                  <img src="<%= blog.createdby?.profileImage || '/public/images/default.png' %>"
+                       alt="<%= blog.createdby?.fullname || 'Author' %>"
+                       style="width:28px;height:28px;border-radius:50%;object-fit:cover;"
+                       onerror="this.src='/public/images/default.png'">
+                  <span><%= blog.createdby?.fullname || 'Anonymous' %></span>
+                </div>
+                <div style="display:flex; gap:10px; align-items:center;">
+                  <button class="btn btn-sm btn-outline-danger like-btn" 
+                          data-blog-id="<%= blog._id %>" 
+                          data-liked="<%= blog.isLiked ? '1' : '0' %>">
+                    <i class="fas fa-heart <%= blog.isLiked ? 'text-danger' : '' %>"></i>
+                    <span class="like-count"><%= blog.likes || 0 %></span>
+                  </button>
+                  <a href="/blog/blog/<%= blog._id %>" class="btn btn-sm btn-outline-primary">Read More</a>
+                </div>
+              </div>
+
+              <% if (blog.category) { %>
+                <div class="tag-pill" style="margin-top:8px;">Category: <%= blog.category %></div>
+              <% } %>
+              <% if (blog.tags && blog.tags.length) { %>
+                <div class="blog-meta" style="flex-wrap: wrap; gap: 6px; margin-top:6px;">
+                  <% blog.tags.forEach(function(tag){ %>
+                    <span class="tag-pill" style="background: rgba(118,75,162,0.12); color:#764ba2;"><%= tag %></span>
+                  <% }) %>
+                </div>
+              <% } %>
+            </div>
+          </div>
+        <% }) %>
+      </div>
+    <% } else { %>
+      <div class="empty-state">
+        <i class="fas fa-info-circle fa-3x mb-3"></i>
+        <p>No blogs yet. Start writing your first post!</p>
+        <a href="/blog/addblog" class="btn btn-primary mt-2"><i class="fas fa-plus me-2"></i>Add Blog</a>
+      </div>
+    <% } %>
+  </div>
+
+  <%- include('./partials/script') %>
+  <script>
+    document.querySelectorAll('.like-btn').forEach(function(btn) {
+      btn.addEventListener('click', async function() {
+        const blogId = this.getAttribute('data-blog-id');
+        const liked = this.getAttribute('data-liked') === '1';
+        const likeCountEl = this.querySelector('.like-count');
+        const icon = this.querySelector('i');
+        const original = likeCountEl.textContent;
+
+        // Optimistic UI
+        let currentLikes = parseInt(original || '0', 10);
+        if (liked) {
+          currentLikes = Math.max(0, currentLikes - 1);
+          this.setAttribute('data-liked', '0');
+          icon.classList.remove('text-danger');
+        } else {
+          currentLikes += 1;
+          this.setAttribute('data-liked', '1');
+          icon.classList.add('text-danger');
+        }
+        likeCountEl.textContent = currentLikes;
+
+        try {
+          const res = await fetch('/blog/like/' + blogId, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            credentials: 'include'
+          });
+          const data = await res.json();
+          if (!data.success) {
+            throw new Error(data.message || 'Failed');
+          }
+          likeCountEl.textContent = data.likes ?? currentLikes;
+          this.setAttribute('data-liked', data.liked ? '1' : '0');
+          if (data.liked) {
+            icon.classList.add('text-danger');
+          } else {
+            icon.classList.remove('text-danger');
+          }
+        } catch (err) {
+          // revert on error
+          this.setAttribute('data-liked', liked ? '1' : '0');
+          likeCountEl.textContent = original;
+          if (liked) {
+            icon.classList.add('text-danger');
+          } else {
+            icon.classList.remove('text-danger');
+          }
+          alert('Unable to update like. Please try again.');
+          console.error(err);
+        }
+      });
+    });
+  </script>
+</body>
+</html>
+
