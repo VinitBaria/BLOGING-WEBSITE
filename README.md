@@ -38,16 +38,6 @@ A Node.js blog application with user authentication and blog management features
    NODE_ENV=development
    ```
 
-### Environment Variables
-
-| Variable | Description | Default | Required |
-|----------|-------------|---------|----------|
-| `MONGODB_URI` | MongoDB connection string | `mongodb://127.0.0.1:27017/blog` | Yes |
-| `PORT` | Server port number | `9000` | No |
-| `JWT_SECRET` | Secret key for JWT token signing | `abc@1234` | Yes |
-| `JWT_EXPIRES_IN` | JWT token expiration time | `1h` | No |
-| `NODE_ENV` | Application environment | `development` | No |
-
 ### Running the Application
 
 ```bash
